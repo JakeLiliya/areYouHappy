@@ -1,0 +1,104 @@
+<template>
+  <view class="box">
+    <view class="tips" @tap="select">TIPS <text>?</text></view>
+    <view class="demo" animation="{{animationData}}">
+        <view class="title" >SOMETHINGHERE</view>
+        <view class='con'>
+            <view>我有一只小毛驴</view>
+            <view>我从来也不骑</view>
+        </view>
+    </view>
+    <view class = 'others'>ddd</view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default class ShopCart extends wepy.page {
+    config = {
+        navigationBarTitleText: '三',
+        enablePullDownRefresh:true
+    };
+
+    data = {
+        animationData: {},
+        flag :false,
+        getData:''
+    }
+    methods = {
+        
+    }
+    /* 
+    动画 animation
+    animation.export()在每次调用之后都会清掉之前的动画操作 。 到处动画队列。
+
+    animation.step() 表示一组动画完成
+    */
+    select(){
+        let animation = wx.createAnimation({
+            duration: 1000,
+            timingFunction: 'ease'
+        })
+        this.animation = animation
+        //this.flag?this.animation.height(0).step():this.animation.height('200rpx').step();
+        if(this.flag){
+            this.animation.height(0);
+            this.animation.backgroundColor('#999').step();
+        }else{
+            this.animation.height('92vh');
+            this.animation.backgroundColor('#456').step();
+        }
+        this.animationData = this.animation.export();
+        this.flag = !this.flag;
+    };
+    onPullDownRefresh(){
+        console.log("12")
+        setTimeout(()=>{
+            wepy.stopPullDownRefresh();
+            this.$apply();
+        },1000)
+    }
+}
+</script>
+<style lang="less">
+.box{
+    width: 100%;
+    .tips{
+        width: 100%;
+        height: 8vh;
+        background-color:rgb(253, 210, 190);
+        color: #456;
+        text-align: center;
+        line-height: 8vh;
+        box-sizing: border-box;
+        border-top: 1rpx solid #456;
+        text{
+            display: inline-block;
+            transform: rotate(10deg);
+        }
+    }
+    .demo {
+    width: 100%;
+    height: 0;
+    position: absolute;
+    z-index: -1;
+    overflow: scroll;
+    text-align: center;
+    color: rgb(253, 210, 190);
+    .title{
+        margin-top: 20rpx;
+    }
+    .con{
+        font-size: 26rpx;
+        padding: 10rpx;
+        view{
+            margin-top: 10rpx;
+        }
+    }
+  }
+  .others{
+      color: #456;
+  }
+}
+  
+</style>

@@ -1,0 +1,160 @@
+<style lang="less">
+    view{
+        width: 100%;
+        font-size: 26rpx; /* 高度不款用vh 市口高度ing */
+        .useInfo{
+            width: 100%;
+            height: 160rpx;
+            box-sizing: border-box;
+            padding: 10rpx 0 0;
+            border-bottom: 1rpx dotted darkcyan;
+            text-align: center;
+            .userAva{
+                display: block;
+                width: 100rpx;
+                height: 100rpx;
+                border-radius: 50%;
+                overflow: hidden;
+                margin: 0 auto;
+               
+            }
+            .userNickName{
+                font-size: 26rpx;
+            }
+        }
+        .clickShowUserInfo{
+            height: 10vh;
+            box-sizing: border-box;
+            padding: 20rpx;
+            border-bottom: 1rpx dotted darkcyan;
+            button{
+                background-color: white;
+                border: 1rpx solid seagreen;
+                width: 246rpx;
+                height: 60rpx;
+                font-size: 24rpx;
+                float: left;
+            }
+            view{
+                width: 600rpx;
+                font-size: 26rpx;
+                image{
+                    width: 60rpx;
+                    height: 60rpx;
+                    border-radius: 50%;
+                    vertical-align: -15rpx;
+                }
+                text{
+                     margin: 0 20rpx;
+                }
+            }
+        }
+        .testStyle{
+           width: 100%;
+           height: 7vh;
+           display: flex;
+           justify-content: space-around;
+           box-sizing: border-box;
+           padding: 2vh;
+           border-bottom: 1rpx solid darkcyan;
+           view{
+               height: 4vh;
+               font-size: 26rpx;
+               text-align: center;
+               line-height: 4vh;
+               margin: 0 2vh;
+           }
+           .active{
+               border-bottom: 2rpx solid forestgreen;
+               background-color: skyblue;
+               border-radius: 20rpx 20rpx 0 0;
+           }
+        }
+        .testFromPost{
+            width: 50%;
+            box-sizing: border-box;
+            padding: 10rpx;
+            border: 1rpx solid firebrick;
+            border-color: transparent firebrick firebrick transparent;
+            form{
+                input{
+                    background-color: skyblue;
+                    padding: 0 1em;
+                    margin-bottom: 20rpx;
+                }
+                button{
+                    background-color: sandybrown;
+                    width: 100%;
+                    font-size: 26rpx;
+                    height: 60rpx;
+                    line-height: 60rpx;
+                }
+            }
+        }
+    }
+</style>
+
+<template>
+    <view>
+        <!-- 显示用户头像 -->
+        <view class="useInfo">
+            <open-data type="userAvatarUrl" class = "userAva icon" mode = "aspectFit"></open-data>
+            <open-data type="userNickName" class="userNickName" ></open-data>
+        </view>
+
+        <!-- 点击显示用户头像 -->
+        <view class = "clickShowUserInfo">
+            <button bindgetuserinfo = "onGotUserInfo" lang = "zh_CN" open-type = "getUserInfo" >获取用户信息</button>
+            <view>
+                <text>{{msg.nickName}}</text>
+                <image src = "{{msg.avatarUrl}}" />
+            </view> 
+        </view>
+
+        <!-- 测试样式 -->
+        <view class = "testStyle"  >
+            <view wx:for = "{{list}}" wx:key = "{{item}}" @tap = "show" data-index = "{{index}}" class = "{{index==current_tag? 'active':''}}">{{item}}</view>
+        </view>
+
+        <!-- 测试表单提交 -->
+        <view class = "testFromPost">
+            <form bindsubmit = "fromSubmit">
+                <input name = "name" placeholder="name"/>
+                <input name = "tell" placeholder="tell"/>
+                <input name = "add" placeholder="add"/>
+                <button formType = "submit">点我提交</button>
+            </form>
+        </view> 
+    </view>
+</template>
+<script>
+import wepy from "wepy";
+export default class One extends wepy.page{
+    config = {
+        navigationBarTitleText:"一"
+    }
+    data = {
+        msg:{}, /* 用户信息 */
+        list:["i am No.1","i am No.2","i am No.3","i am No.4"],/* 渲染条数 */
+         current_tag:''/*默认选中 第一个*/
+    };
+    methods = {
+        onGotUserInfo(e){
+            console.log(e.detail.userInfo);
+            this.msg = e.detail.userInfo;
+            this.$apply();
+        },
+        show(e){
+            this.current_tag = e.currentTarget.dataset.index;
+        },
+        fromSubmit(e){
+            console.log("点提交了哦~");
+            console.log(e.detail.value);
+            let { name,tell,add } = e.detail.value;
+            this.name = name;
+            this.tell = tell;
+            this.add = add;
+        },
+    }
+}
+</script>

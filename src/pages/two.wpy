@@ -1,0 +1,51 @@
+<style lang="less">
+    view{
+    }
+</style>
+
+<template>
+    <view wx:for = "{{list}}" wx:key = "{{item}}" @tap='showOne' class='box'>
+        <view class='two'>
+            <text>{{item.nickname}}----</text>
+            <text>{{item.age}}----</text>
+            <text>{{item.mtime}}</text>
+        </view>
+    </view>
+</template>
+<script>
+import wepy from "wepy";
+export default class Two extends wepy.page{
+    config = {
+        navigationBarTitleText:"二",
+        enablePullDownRefresh:true
+    }
+    data = {
+        list:[]
+    }
+    onLoad(options){
+        this.getUserInfo();
+        this.$apply();
+    };
+    getUserInfo(){
+        var that = this;
+        wx.request({
+            url: 'https://www.easy-mock.com/mock/5c18b3eb29e94a194029f5e7/pointdata/useAblePoint',
+            header: {
+            'content-type': 'application/json'
+            },
+            success(res) {
+            console.log(res.data.data.list);
+            that.setData({
+                list: res.data.data.list /* 赋值给本地list渲染 */
+            })
+            }
+        })
+        this.$apply();
+    }
+    onPullDownRefresh(){
+        this.getUserInfo();
+        this.$apply();
+    }
+   
+}
+</script>

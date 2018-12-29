@@ -1,0 +1,26 @@
+<style lang="less">
+    view{
+        background-color: salmon;
+        text{
+            color: white;
+        }
+    }
+</style>
+
+<template>
+    <view>
+        132
+        <text>我是text</text>
+    </view>
+</template>
+<script>
+import wepy from "wepy";
+export default class Test extends wepy.page{
+    config = {
+        navigationBarTitleText:"测试"
+    }
+    data = {
+
+    }
+}
+</script>
